@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head('Home')"></head>
+<body>
+<nav th:replace="layout :: nav"></nav>
+<div class="container">
+    <h1 class="grey-text text-darken-1 left-align">Create New Note</h1>
+    <br />
+
+    <div class="row">
+        <form th:object="${newNote}" th:method="post" th:action="@{|/notes/create|}" class="col s6">
+            <div class="input-field col s6">
+                <input type="hidden" th:field="*{id}"/>
+                <input th:field="*{title}" id="title" type="text">
+                <label for="title">Note Title</label>
+                <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
+                        class="helper-text amber-text text-darken-3" data-error="wrong" data-success="right"></span>
+            </div>
+            <div class="input-field col s12">
+                <textarea th:field="*{content}" id="content" class="materialize-textarea"></textarea>
+                <label for="content">Note Content</label>
+                <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}"
+                      class="helper-text amber-text text-darken-3" data-error="wrong" data-success="right"></span>
+            </div>
+            <div class="col s6">
+                <button class="btn waves-effect waves-light" type="submit" name="action">Create
+                    <i class="material-icons right">create</i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <h1 class="grey-text text-darken-1 left-align">Notes</h1>
+    <br />
+
+    <div class="row">
+        <div th:each="note: ${notes}" class="col s12 m6">
+            <div class="card grey darken-3">
+                <div class="card-content white-text">
+                    <span class="card-title amber-text" th:text="${note.title}"></span>
+                    <p th:text="${note.content}"></p>
+                </div>
+                <div class="card-action">
+                    <a th:href="@{|/notes/${note.id}/edit|}">Edit</a>
+                    <a class="delete-note-link" th:href="${note.id}">Delete</a>
+                </div>
+                <form th:id="|delete-note-form-id-${note.id}|" th:method="post" th:action="@{|/notes/${note.id}/delete|}"></form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="layout :: scripts"></div>
+<div th:replace="layout :: flash(${flash_message})"></div>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head('Edit Note')"></head>
+<body>
+<nav th:replace="layout :: nav"></nav>
+<!--<div th:replace="layout :: flash"></div>-->
+<div class="container">
+    <h1 class="grey-text text-darken-1 left-align">Notes</h1>
+    <br />
+
+    <div class="row">
+        <form th:object="${editedNote}" th:method="post" th:action="@{|/notes/${editedNote.id}/update|}" class="col s6">
+            <div class="input-field col s6">
+                <input th:field="*{title}" id="title" type="text">
+                <label for="title">Note Title</label>
+                <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
+                      class="helper-text amber-text text-darken-3" data-error="wrong" data-success="right"></span>
+            </div>
+            <div class="input-field col s12">
+                <textarea th:field="*{content}" id="content" class="materialize-textarea"></textarea>
+                <label for="content">Note Content</label>
+                <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}"
+                      class="helper-text amber-text text-darken-3" data-error="wrong" data-success="right"></span>
+            </div>
+            <div class="col s6">
+                <button class="btn waves-effect waves-light" type="submit" name="action">Edit
+                    <i class="material-icons right">edit</i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+<div th:replace="layout :: scripts"></div>
+<div th:replace="layout :: flash(${flash_message})"></div>
+</body>
+</html>
